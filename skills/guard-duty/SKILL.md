@@ -45,6 +45,10 @@ share it, so always work from what is in the sheet, not from memory or an old fi
   `תאריך יצירה | נבנה ע"י | סבב | מ- | עד | סטטוס (טיוטה/אושר/פורסם) | הערות`. Add a row for the draft
   and update its status when it is approved and posted. Ask the user their name once per session for
   `נבנה ע"י`.
+- **Log every change too.** Any edit you make to the sheet outside a full list (swapping a name,
+  filling or cancelling a slot, changing a colour) gets its own `לוג` row right after it, with
+  status `שינוי`, `מ-`/`עד` set to the changed slot's hours, and a short free-text note in Hebrew
+  in `הערות` saying what changed (e.g. `יוסטור ו' 03:00: הכט במקום מפלג\חפק, צבוע ורוד`).
 - Writing to the sheet needs the **Google Sheets connector**. With only Google Drive you can read the
   sheet (a sample of the first rows) but not edit it. If it's missing, say so, and offer the Excel
   file in the same column layout to paste in by hand.
