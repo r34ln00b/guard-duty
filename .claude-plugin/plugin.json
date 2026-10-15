@@ -1,5 +1,5 @@
 {
   "name": "guard-duty",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Builds the unit's guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and תצפית/פטרול as Excel, WhatsApp text, or straight into the Google Sheet."
 }

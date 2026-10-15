@@ -46,7 +46,10 @@ def visual(text):
 
 
 def wrap(text, font, max_w):
-    """Split text into lines no wider than max_w (measured in logical order)."""
+    """Split text into lines no wider than max_w (measured in logical order).
+    A newline in the text always starts a new line."""
+    if "\n" in text:
+        return [line for part in text.split("\n") for line in wrap(part, font, max_w)]
     lines, cur = [], ""
     for word in text.split():
         trial = f"{cur} {word}".strip()

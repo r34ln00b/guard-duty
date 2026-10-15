@@ -91,7 +91,7 @@ Read those rows of the round tab (values and background colours) and write a JSO
 - `caption`: Denis's line under the table, a different one every time (see "The screenshot line" in
   `denis.md`). Write it fresh from the rows you're showing, e.g. who got 03:00, who has the most
   shifts. Check every fact in it against the rows. No emoji: the image font can't draw them.
-  Don't sign it: the signature has its own field.
+  Don't sign it: the signature has its own field. Put `\n` between sentences so each starts its own line.
 - `signature`: Denis's sign-off, drawn on its own line under the caption, e.g.
   `"— דניס, העבד שעושה שבצ\"ק"`. Pick a different title each time (see `denis.md`).
 
