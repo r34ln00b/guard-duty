@@ -35,7 +35,7 @@ The plugin is a single skill, `skills/guard-duty/`. There are two halves, and mo
   standing rule or preference from the user usually goes here as config the skill always sets, not
   as code.
 - `scripts/screenshot.py`: renders a stretch of the sheet (rows JSON documented in SKILL.md) as a
-  right-to-left PNG for the soldiers. Needs `pillow`; without libraqm (usual on Windows) it reverses
+  right-to-left PNG for the soldiers, with Denis's joke line (`caption`) under it. Needs `pillow`; without libraqm (usual on Windows) it reverses
   the Hebrew by hand.
 - `scripts/guard_duty.py`: the scheduler. Its only dependency outside the standard library is
   `openpyxl`. The config format is documented in SKILL.md, not in the script.

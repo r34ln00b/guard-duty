@@ -88,6 +88,10 @@ Read those rows of the round tab (values and background colours) and write a JSO
   Cells containing `מפלג`/`חפק` are pink automatically. To force a colour on one cell, write it as
   `{"name": "…", "color": "yellow"}` (or a `#RRGGBB`).
 
+- `caption`: Denis's line under the table, a different one every time (see "The screenshot line" in
+  `denis.md`). Write it fresh from the rows you're showing, e.g. who got 03:00, who has the most
+  shifts. Check every fact in it against the rows. No emoji: the image font can't draw them.
+
 Then run `python scripts/screenshot.py rows.json --out list.png` and send the PNG with
 SendUserFile. It draws a right-to-left table (יום | שעה | stands), all text centred in one font
 and size. If no Hebrew font is found, pass `--font` (on Windows `C:/Windows/Fonts/arial.ttf`). Look

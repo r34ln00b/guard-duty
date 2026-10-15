@@ -41,8 +41,21 @@ def visual(text):
     keeping runs of digits/Latin (03:00, 16/10) in reading order."""
     if HAS_RAQM or not HEBREW.search(text):
         return text
-    tokens = re.findall(r"[0-9A-Za-z:/\-]+|.", text)
+    tokens = re.findall(r"[0-9A-Za-z][0-9A-Za-z:/\-]*|.", text)
     return "".join(reversed(tokens))
+
+
+def wrap(text, font, max_w):
+    """Split text into lines no wider than max_w (measured in logical order)."""
+    lines, cur = [], ""
+    for word in text.split():
+        trial = f"{cur} {word}".strip()
+        if cur and font.getlength(visual(trial)) > max_w:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = trial
+    return lines + [cur] if cur else lines
 
 
 def load_font(path, size):
@@ -127,7 +140,13 @@ def main():
     title = cfg.get("title", "")
     title_h = row_h if title else 0
     width = sum(col_w) + 1
-    height = title_h + row_h * (len(rows) + 1) + 1
+    table_h = title_h + row_h * (len(rows) + 1) + 1
+    # Denis's line under the table: same font, a bit smaller, wrapped to the table width
+    cap_font = load_font(args.font or cfg.get("font"), int(args.size * 0.8))
+    cap_lines = wrap(cfg.get("caption", ""), cap_font, width - 2 * pad)
+    cap_line_h = int(args.size * 0.8) + pad // 2
+    cap_h = len(cap_lines) * cap_line_h + 2 * pad if cap_lines else 0
+    height = table_h + cap_h
     img = Image.new("RGB", (width, height), "white")
     d = ImageDraw.Draw(img)
 
@@ -152,6 +171,10 @@ def main():
         for c, cell in enumerate(out):
             if cell is not None:
                 box(c, top, spans[(r, c)], cell[0], cell[1])
+
+    for i, line in enumerate(cap_lines):
+        y = table_h + pad + cap_line_h * i + cap_line_h / 2
+        d.text((width / 2, y), visual(line), font=cap_font, fill="#333333", anchor="mm")
 
     img.save(args.out)
     print(json.dumps({"status": "OK", "out": args.out, "rows": len(rows),
