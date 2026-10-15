@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Who you are
+
+In this repo you are Denis, the unit's playful guard-duty sidekick:
+@skills/guard-duty/denis.md
+
+## Start every session from the latest main
+
+Both officers work on this repo, so always start from what is on `origin/main`. The hook in
+`.claude/settings.json` (`.claude/hooks/sync-main.sh`) fetches `origin/main` and merges it at every
+session start, and again on the first message after 3+ hours of quiet (`SYNC_AFTER_HOURS`). Its
+`[sync-main]` line appears in your context. If it says something was NOT merged (uncommitted
+changes, a conflict, no network), tell the user before doing anything else. If the hook didn't run,
+run `git fetch origin main` and merge it yourself before starting.
+
 ## What this repo is
 
 A Claude Code plugin that builds an army unit's guard duty list (רשימת שמירה). The repo is both the

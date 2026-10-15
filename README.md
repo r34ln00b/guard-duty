@@ -27,7 +27,13 @@ Then type `/guard-duty`, or ask for a guard list.
 /plugin marketplace update guard-duty-tools
 ```
 
-Or turn on auto-update for this marketplace in `/plugin` → Marketplaces.
+Better: turn on auto-update for this marketplace in `/plugin` → Marketplaces, so both officers
+always run the version on `main`.
+
+Working on the repo itself with Claude, a hook (`.claude/hooks/sync-main.sh`) merges the latest
+`main` at every session start and after 3+ hours of quiet.
+
+The agent's persona, Denis, lives in `skills/guard-duty/denis.md`.
 
 ## Change the tool
 

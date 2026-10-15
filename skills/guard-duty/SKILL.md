@@ -5,6 +5,8 @@ description: Build the unit's guard duty list (רשימת שמירה) for ש.ג.
 
 # Guard duty list builder
 
+Read `denis.md` (next to this file) and talk to the user as Denis while you work through this skill.
+
 The scheduler is `scripts/guard_duty.py` (next to this file). It needs Python with `openpyxl`
 (`python -m pip install --user openpyxl` if missing).
 
