@@ -144,6 +144,9 @@ def main():
     # Denis's line under the table: same font, a bit smaller, wrapped to the table width
     cap_font = load_font(args.font or cfg.get("font"), int(args.size * 0.8))
     cap_lines = wrap(cfg.get("caption", ""), cap_font, width - 2 * pad)
+    # Denis's signature always goes on a line of its own, under the caption
+    if cfg.get("signature"):
+        cap_lines += wrap(cfg["signature"], cap_font, width - 2 * pad)
     cap_line_h = int(args.size * 0.8) + pad // 2
     cap_h = len(cap_lines) * cap_line_h + 2 * pad if cap_lines else 0
     height = table_h + cap_h
