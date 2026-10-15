@@ -34,6 +34,9 @@ The plugin is a single skill, `skills/guard-duty/`. There are two halves, and mo
   03:00-05:00 or 21:00-23:00 and never at 05:00-07:00; רפאל and אליעזר on patrol at night. A new
   standing rule or preference from the user usually goes here as config the skill always sets, not
   as code.
+- `scripts/screenshot.py`: renders a stretch of the sheet (rows JSON documented in SKILL.md) as a
+  right-to-left PNG for the soldiers. Needs `pillow`; without libraqm (usual on Windows) it reverses
+  the Hebrew by hand.
 - `scripts/guard_duty.py`: the scheduler. Its only dependency outside the standard library is
   `openpyxl`. The config format is documented in SKILL.md, not in the script.
 
@@ -99,5 +102,5 @@ The sheet (`שבצק_01`) is the single source of truth shared by both officers.
 tab (`סבב 3`, …). Drafts go to a `sand box` tab, and only an approved list is copied into the round
 tab; every list gets a row in the `לוג` tab. SKILL.md has the full workflow. It has
 the same column order as the Excel file, in columns H-N. Its day labels change at 01:00, not 07:00.
-Existing colours there: green for a filled slot, yellow for people joining from another duty, and
-magenta for a `מפלג\חפק` slot. Read the tab before writing, and change only the rows being scheduled.
+Colours mark the platoon: yellow = מחלקה 2, green = מחלקה 3, magenta (pink) = מפל"ג / חפ"ק
+(and `מפלג\חפק` slots). Cells are centred in one font. Read the tab before writing, and change only the rows being scheduled.

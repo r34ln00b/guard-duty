@@ -8,7 +8,8 @@ description: Build the unit's guard duty list (רשימת שמירה) for ש.ג.
 Read `denis.md` (next to this file) and talk to the user as Denis while you work through this skill.
 
 The scheduler is `scripts/guard_duty.py` (next to this file). It needs Python with `openpyxl`
-(`python -m pip install --user openpyxl` if missing).
+(`python -m pip install --user openpyxl` if missing). The screenshot for the soldiers is
+`scripts/screenshot.py`, which needs `pillow`.
 
 ## Fixed structure (don't ask about this)
 
@@ -40,7 +41,11 @@ share it, so always work from what is in the sheet, not from memory or an old fi
 - **Draft in the `sand box` tab** (create it if missing, with the same headers as the round tab).
   Clear its old rows and write the new list there. Never write a draft into the round tab.
 - **Post only after approval.** When the user approves the draft, copy those rows into the current
-  round tab, changing only the rows being scheduled, and colour filled cells green to match.
+  round tab, changing only the rows being scheduled.
+- **Keep the list tidy.** Colours mark the platoon (from the roster in columns B-E), so every
+  name you write gets its platoon's colour: **yellow = מחלקה 2**, **green = מחלקה 3**,
+  **pink (magenta) = מפל"ג / חפ"ק** (and slots taken by `מפלג\חפק`). A name that isn't in the roster:
+  ask which platoon. Every cell you write is centred, in the tab's own font and size, like the rest.
 - **Log every list** in the `לוג` tab (create it if missing), one row each:
   `תאריך יצירה | נבנה ע"י | סבב | מ- | עד | סטטוס (טיוטה/אושר/פורסם) | הערות`. Add a row for the draft
   and update its status when it is approved and posted. Ask the user their name once per session for
@@ -55,6 +60,38 @@ share it, so always work from what is in the sheet, not from memory or an old fi
 - Writing to the sheet needs the **Google Sheets connector**. With only Google Drive you can read the
   sheet (a sample of the first rows) but not edit it. If it's missing, say so, and offer the Excel
   file in the same column layout to paste in by hand.
+
+## Screenshot for the soldiers
+
+After every list you post and every change to the sheet, ask (one short line) whether they want a
+screenshot of the coming shifts to send to the soldiers. Suggest the range from the earliest slot
+you just changed (or the start of the new list) to the last filled row of the round tab, and let
+them change it.
+
+Read those rows of the round tab (values and background colours) and write a JSON like this:
+
+```json
+{
+  "title": "שמירות ו' 16/10",
+  "groups": {"yellow": ["דורון", "…"], "green": ["רפאל", "…"], "pink": ["הכט", "…"]},
+  "rows": [
+    {"day": "ו'", "time": "03:00", "cells": ["חדד", "הכט", "רפאל", "קינן", ""]},
+    {"time": "07:00", "cells": ["אטיאס", "ברמי", "שמעון", "", "אוראל"]},
+    {"time": "09:00", "cells": ["ג'ימי", "אפריים", "סאם", "", "^"]}
+  ]
+}
+```
+
+- `cells` are in sheet order: ש.ג, יוסטור, דרומית, פטרול, תצפית. `"^"` continues the cell above
+  (the merged 4h daytime תצפית). A row without `day` belongs to the day above (labels change at 01:00).
+- `groups` comes from the roster: מחלקה 2 → `yellow`, מחלקה 3 → `green`, חפ"ק and מפל"ג → `pink`.
+  Cells containing `מפלג`/`חפק` are pink automatically. To force a colour on one cell, write it as
+  `{"name": "…", "color": "yellow"}` (or a `#RRGGBB`).
+
+Then run `python scripts/screenshot.py rows.json --out list.png` and send the PNG with
+SendUserFile. It draws a right-to-left table (יום | שעה | stands), all text centred in one font
+and size. If no Hebrew font is found, pass `--font` (on Windows `C:/Windows/Fonts/arial.ttf`). Look
+at the image before sending it: Hebrew must read right-to-left and colours must match the platoons.
 
 ## Step 1: ask the user (one AskUserQuestion call or a short message, only what's missing)
 
