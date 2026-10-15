@@ -23,6 +23,30 @@ The scheduler is `scripts/guard_duty.py` (next to this file). It needs Python wi
 - At least `min_rest_hours` (default 2) between shifts. Beyond that it maximizes the smallest rest
   gap, then balances hours and night shifts. Who gets which hours is random.
 
+## The Google Sheet is the source of truth
+
+The unit's sheet is `שבצק_01`
+(https://docs.google.com/spreadsheets/d/13taiMKAGdcOAZQ_kIE3k8V2klLmBE3tUg3FaCIWvUcE). Two officers
+share it, so always work from what is in the sheet, not from memory or an old file.
+
+- **One tab per round** (`סבב2`, `סבב 3`, …). The newest round tab is the current one. Ask before
+  starting a new round tab. Columns A-E hold the roster by group (מחלקה 2, מחלקה 3, חפ"ק, מפל"ג); the
+  list is in H-N: יום | שעה | ש.ג | יוסטור | דרומית | פטרול | תצפית. Day labels change at 01:00.
+- **Before building:** read the current round tab. Take the roster from columns B-E. Read the last
+  filled rows into `last_shift`, and anything already filled in the hours you're scheduling into
+  `fixed`. Cells like `מפלג\חפק`, `מפלג` or `חמ"ליסט` are taken by other duties: cancel those slots.
+- **Draft in the `sand box` tab** (create it if missing, with the same headers as the round tab).
+  Clear its old rows and write the new list there. Never write a draft into the round tab.
+- **Post only after approval.** When the user approves the draft, copy those rows into the current
+  round tab, changing only the rows being scheduled, and colour filled cells green to match.
+- **Log every list** in the `לוג` tab (create it if missing), one row each:
+  `תאריך יצירה | נבנה ע"י | סבב | מ- | עד | סטטוס (טיוטה/אושר/פורסם) | הערות`. Add a row for the draft
+  and update its status when it is approved and posted. Ask the user their name once per session for
+  `נבנה ע"י`.
+- Writing to the sheet needs the **Google Sheets connector**. With only Google Drive you can read the
+  sheet (a sample of the first rows) but not edit it. If it's missing, say so, and offer the Excel
+  file in the same column layout to paste in by hand.
+
 ## Step 1: ask the user (one AskUserQuestion call or a short message, only what's missing)
 
 1. **Start and length**: start date/time (default: tomorrow 07:00; the start must be an odd hour) and how many days.

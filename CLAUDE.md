@@ -81,7 +81,9 @@ session folders live). Write configs and outputs under `%TEMP%` and copy the res
 
 ## The Google Sheet
 
-Lists are often written straight into the unit's Google Sheet, in tabs named like `סבב 3`. It has
+The sheet (`שבצק_01`) is the single source of truth shared by both officers. Each round has its own
+tab (`סבב 3`, …). Drafts go to a `sand box` tab, and only an approved list is copied into the round
+tab; every list gets a row in the `לוג` tab. SKILL.md has the full workflow. It has
 the same column order as the Excel file, in columns H-N. Its day labels change at 01:00, not 07:00.
 Existing colours there: green for a filled slot, yellow for people joining from another duty, and
 magenta for a `מפלג\חפק` slot. Read the tab before writing, and change only the rows being scheduled.
