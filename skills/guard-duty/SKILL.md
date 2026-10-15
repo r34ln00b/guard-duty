@@ -49,6 +49,9 @@ share it, so always work from what is in the sheet, not from memory or an old fi
   filling or cancelling a slot, changing a colour) gets its own `לוג` row right after it, with
   status `שינוי`, `מ-`/`עד` set to the changed slot's hours, and a short free-text note in Hebrew
   in `הערות` saying what changed (e.g. `יוסטור ו' 03:00: הכט במקום מפלג\חפק, צבוע ורוד`).
+- **End with the link.** After any change to the sheet (a posted list, a draft, a single edit),
+  finish your reply with the sheet's link on its own line, so the user can check it in one click:
+  https://docs.google.com/spreadsheets/d/13taiMKAGdcOAZQ_kIE3k8V2klLmBE3tUg3FaCIWvUcE
 - Writing to the sheet needs the **Google Sheets connector**. With only Google Drive you can read the
   sheet (a sample of the first rows) but not edit it. If it's missing, say so, and offer the Excel
   file in the same column layout to paste in by hand.
