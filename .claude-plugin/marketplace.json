@@ -1,0 +1,11 @@
+{
+  "name": "guard-duty-tools",
+  "owner": { "name": "Guard duty team" },
+  "plugins": [
+    {
+      "name": "guard-duty",
+      "source": "./",
+      "description": "Builds the unit's guard duty list (רשימת שמירה)."
+    }
+  ]
+}
