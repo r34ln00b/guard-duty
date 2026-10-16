@@ -1,6 +1,6 @@
 ---
 name: guard-duty
-description: Build the unit's guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and תצפית/פטרול, and the on-call teams (דורס, דורס א, כרמל א, תורנים), in the unit's Google Sheet, Excel or WhatsApp text. Use when the user asks for a guard list, שמירות, רשימת שמירה, דורסים, תורנים, or types /guard-duty.
+description: Build the unit's guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and תצפית/פטרול, and the on-call teams (דורס, דורס א, כרמל א, תורנים), in the unit's Google Sheet, Excel or WhatsApp text. Use when the user asks for a guard list, שמירות, רשימת שמירה, דורסים, תורנים, or types /guard-duty. Also use it for missing or broken gear (חוסרים, ציוד חסר/שבור), open tasks (משימות, "מה פתוח"), who is responsible for what (אחריות), and operational lessons (לקחים).
 ---
 
 # Guard duty list builder
@@ -8,6 +8,8 @@ description: Build the unit's guard duty list (רשימת שמירה) for ש.ג.
 Read `denis.md` (next to this file) and talk to the user as Denis while you work through this skill.
 
 For the on-call teams (דורס, דורס א, כרמל א, תורנים) also read `doresim.md`.
+
+For missing or broken gear, open tasks, responsibilities and operational lessons, read `yoman.md`.
 
 The scheduler is `scripts/guard_duty.py` (next to this file). It needs Python with `openpyxl`
 (`python -m pip install --user openpyxl` if missing). The screenshot for the soldiers is
@@ -38,6 +40,9 @@ share it, so always work from what is in the sheet, not from memory or an old fi
   start of each session ask which tab you're working in (suggest the newest). Ask before
   starting a new round tab. Columns A-E hold the roster by group (מחלקה 2, מחלקה 3, חפ"ק, מפל"ג); the
   list is in H-N: יום | שעה | ש.ג | יוסטור | דרומית | פטרול | תצפית. Day labels change at 01:00.
+- **Tasks and lessons** live in the `משימות` and `לקחים` tabs (see `yoman.md`). When you first read
+  the round tab in a session, also read `משימות`, and if anything is open say so in one line
+  (e.g. `3 משימות פתוחות, 1 בלי אחראי`).
 - **Before building:** read the current round tab. Take the roster from columns B-E. Read the last
   filled rows into `last_shift`, and anything already filled in the hours you're scheduling into
   `fixed`. Cells like `מפלג\חפק`, `מפלג` or `חמ"ליסט` are taken by other duties: cancel those slots.

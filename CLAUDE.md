@@ -41,6 +41,10 @@ The plugin is a single skill, `skills/guard-duty/`. There are two halves, and mo
 - `doresim.md`: the on-call teams (דורס 3, דורס א 4, כרמל א 2, תורנים 2), one platoon per 19:00-19:00
   block, with the fixed חמ"ליסטים list. `scripts/duty_history.py` counts past duties per person from
   saved round-tab reads, to spread the תורנים fairly.
+- `yoman.md`: open tasks (missing or broken gear, with a category and an owner) and operational
+  lessons, kept in the sheet's `משימות` and `לקחים` tabs. The plugin's slash commands in `commands/`
+  (`/open-tasks`, `/add-task`, `/close-task`, `/owners`, `/add-lesson`, `/lessons`) are short prompts
+  that point to it.
 - `scripts/guard_duty.py`: the scheduler. Its only dependency outside the standard library is
   `openpyxl`. The config format is documented in SKILL.md, not in the script.
 
@@ -104,7 +108,7 @@ session folders live). Write configs and outputs under `%TEMP%` and copy the res
 
 The sheet (`שבצק_01`) is the single source of truth shared by both officers. Each round has its own
 tab (`סבב 3`, …). Drafts go to a `sand box` tab, and only an approved list is copied into the round
-tab; every list gets a row in the `לוג` tab. SKILL.md has the full workflow. It has
+tab; every list gets a row in the `לוג` tab. Open tasks and lessons are in the `משימות` and `לקחים` tabs. SKILL.md has the full workflow. It has
 the same column order as the Excel file, in columns H-N. Its day labels change at 01:00, not 07:00.
 Colours mark the platoon: yellow = מחלקה 2, green = מחלקה 3, magenta (pink) = מפל"ג / חפ"ק
 (and `מפלג\חפק` slots). Cells are centred in one font. Read the tab before writing, and change only the rows being scheduled.
