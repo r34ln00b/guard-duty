@@ -72,6 +72,10 @@ def load_font(path, size):
 def cell_color(cell, groups, explicit):
     if explicit:
         return COLORS.get(explicit, explicit)
+    names = [n for n in re.split(r"[\n+,]", cell) if n.strip()]
+    if len(names) > 1:
+        colors = {cell_color(n, groups, None) for n in names}
+        return colors.pop() if len(colors) == 1 else COLORS["white"]
     name = cell.strip()
     if not name:
         return COLORS["white"]
@@ -137,13 +141,27 @@ def main():
     col_w = []
     for c in range(ncols):
         texts = [headers[c]] + [g[c][0] for g in grid if g[c]]
-        w = max(font.getlength(visual(t)) for t in texts)
+        w = max(font.getlength(visual(line)) for t in texts for line in t.split("\n"))
         col_w.append(int(w) + 2 * pad + args.size)
     row_h = args.size + 2 * pad
+    line_h = int(args.size * 1.25)
+    heights = [row_h] * len(grid)
+    for r, out in enumerate(grid):
+        for c, cell in enumerate(out):
+            if cell is None:
+                continue
+            need = row_h + line_h * cell[0].count("\n")
+            last = r + spans[(r, c)] - 1
+            have = sum(heights[r:last + 1])
+            if need > have:
+                heights[last] += need - have
     title = cfg.get("title", "")
     title_h = row_h if title else 0
     width = sum(col_w) + 1
-    table_h = title_h + row_h * (len(rows) + 1) + 1
+    tops = [title_h + row_h]
+    for h in heights:
+        tops.append(tops[-1] + h)
+    table_h = tops[-1] + 1
     # Denis's line under the table: same font, a bit smaller, wrapped to the table width
     cap_font = load_font(args.font or cfg.get("font"), int(args.size * 0.8))
     cap_lines = wrap(cfg.get("caption", ""), cap_font, width - 2 * pad)
@@ -159,24 +177,23 @@ def main():
     # right-to-left: column 0 (יום) is the rightmost
     x_right = [width - 1 - sum(col_w[:c]) for c in range(ncols)]
 
-    def box(c, top, nrows, text, bg):
+    def box(c, top, y1, text, bg):
         x1 = x_right[c]
         x0 = x1 - col_w[c]
-        y1 = top + row_h * nrows
         d.rectangle([x0, top, x1, y1], fill=bg, outline=GRID, width=1)
-        if text:
-            d.text(((x0 + x1) / 2, (top + y1) / 2), visual(text), font=font,
-                   fill="black", anchor="mm")
+        lines = [line.strip() for line in text.split("\n")] if text else []
+        for i, line in enumerate(lines):
+            y = (top + y1) / 2 + (i - (len(lines) - 1) / 2) * line_h
+            d.text(((x0 + x1) / 2, y), visual(line), font=font, fill="black", anchor="mm")
 
     if title:
         d.text((width / 2, title_h / 2), visual(title), font=font, fill="black", anchor="mm")
     for c, h in enumerate(headers):
-        box(c, title_h, 1, h, HEADER_BG)
+        box(c, title_h, title_h + row_h, h, HEADER_BG)
     for r, out in enumerate(grid):
-        top = title_h + row_h * (r + 1)
         for c, cell in enumerate(out):
             if cell is not None:
-                box(c, top, spans[(r, c)], cell[0], cell[1])
+                box(c, tops[r], tops[r + spans[(r, c)]], cell[0], cell[1])
 
     for i, line in enumerate(cap_lines):
         y = table_h + pad + cap_line_h * i + cap_line_h / 2

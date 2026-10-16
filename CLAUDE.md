@@ -37,6 +37,9 @@ The plugin is a single skill, `skills/guard-duty/`. There are two halves, and mo
 - `scripts/screenshot.py`: renders a stretch of the sheet (rows JSON documented in SKILL.md) as a
   right-to-left PNG for the soldiers, with Denis's joke line (`caption`) under it. Needs `pillow`; without libraqm (usual on Windows) it reverses
   the Hebrew by hand.
+- `doresim.md`: the on-call teams (דורס 3, דורס א 4, כרמל א 2, תורנים 2), one platoon per 19:00-19:00
+  block, with the fixed חמ"ליסטים list. `scripts/duty_history.py` counts past duties per person from
+  saved round-tab reads, to spread the תורנים fairly.
 - `scripts/guard_duty.py`: the scheduler. Its only dependency outside the standard library is
   `openpyxl`. The config format is documented in SKILL.md, not in the script.
 

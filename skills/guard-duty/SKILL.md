@@ -1,11 +1,13 @@
 ---
 name: guard-duty
-description: Build the unit's guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and תצפית/פטרול as an Excel file plus WhatsApp text. Use when the user asks for a guard list, שמירות, רשימת שמירה, or types /guard-duty.
+description: Build the unit's guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and תצפית/פטרול, and the on-call teams (דורס, דורס א, כרמל א, תורנים), in the unit's Google Sheet, Excel or WhatsApp text. Use when the user asks for a guard list, שמירות, רשימת שמירה, דורסים, תורנים, or types /guard-duty.
 ---
 
 # Guard duty list builder
 
 Read `denis.md` (next to this file) and talk to the user as Denis while you work through this skill.
+
+For the on-call teams (דורס, דורס א, כרמל א, תורנים) also read `doresim.md`.
 
 The scheduler is `scripts/guard_duty.py` (next to this file). It needs Python with `openpyxl`
 (`python -m pip install --user openpyxl` if missing). The screenshot for the soldiers is
@@ -32,7 +34,8 @@ The unit's sheet is `שבצק_01`
 (https://docs.google.com/spreadsheets/d/13taiMKAGdcOAZQ_kIE3k8V2klLmBE3tUg3FaCIWvUcE). Two officers
 share it, so always work from what is in the sheet, not from memory or an old file.
 
-- **One tab per round** (`סבב2`, `סבב 3`, …). The newest round tab is the current one. Ask before
+- **One tab per round** (`סבב2`, `סבב 3`, …). The officers work on one round per session, so at the
+  start of each session ask which tab you're working in (suggest the newest). Ask before
   starting a new round tab. Columns A-E hold the roster by group (מחלקה 2, מחלקה 3, חפ"ק, מפל"ג); the
   list is in H-N: יום | שעה | ש.ג | יוסטור | דרומית | פטרול | תצפית. Day labels change at 01:00.
 - **Before building:** read the current round tab. Take the roster from columns B-E. Read the last
@@ -111,7 +114,9 @@ at the image before sending it: Hebrew must read right-to-left and colours must 
    - fixed assignments (number X must take a specific slot)
    - whether same stand twice in a row is OK
    - whether anyone just came off a shift before the start (`last_shift`)
-4. Ask once whether they want names in the list. If yes, take a number→name map.
+4. Whether extra forces join the guards this time, and who is on דורסים during these hours
+   (they're `unavailable` for their 24h block, see `doresim.md`). חמ"ליסטים never guard.
+5. Ask once whether they want names in the list. If yes, take a number→name map.
 
 If they already gave some of this in their message, don't ask about it again.
 
