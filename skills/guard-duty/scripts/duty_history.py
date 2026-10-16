@@ -20,6 +20,7 @@ ROLES = [("דורס א", "דורס א"), ("דורס", "דורס"), ("כרמל א
          ("תורנים", "תורנים"), ("תרנים", "תורנים")]
 ROSTER_HEADERS = ("מחלקה", 'חפ"ק', 'מפל"ג')
 TIME = re.compile(r"^\d{1,2}:\d{2}$")
+MERGED_GAP = 6  # empty rows after a value that mean "merged block" rather than "left empty"
 
 
 def role_of(header):
@@ -87,15 +88,21 @@ def count_tab(rows, roster):
     cols = {c: role_of(str(v)) for c, v in enumerate(header) if role_of(str(v))}
     counts = {role: Counter() for role in set(cols.values())}
     for c, role in cols.items():
-        prev = ""
+        last, gap = set(), 0
         for r in rows[header_i + 1:]:
             if time_c is not None and not TIME.match(str(r[time_c]).strip()):
-                prev = ""
                 continue
             v = str(r[c]).strip()
-            if v and v != prev:
-                counts[role].update(set(split_names(v, roster)))
-            prev = v
+            if not v:
+                gap += 1
+                continue
+            names = set(split_names(v, roster))
+            # A person starts a new turn when they weren't in the cell above, or when the same
+            # names come back after a merged block's empty rows. A short gap (a column left empty
+            # overnight) or a partner swap mid-block doesn't start a new turn.
+            new = names if gap >= MERGED_GAP else names - last
+            counts[role].update(new)
+            last, gap = names, 0
     return counts
 
 

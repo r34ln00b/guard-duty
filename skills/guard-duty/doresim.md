@@ -72,4 +72,8 @@ Caption and signature follow `denis.md`.
 
 ## Fixed חמ"ליסטים
 
-Not recorded yet. Ask the user for each platoon's חמ"ליסטים, add them here, and push the change.
+- **מחלקה 2:** יונתי, דביר כהן
+- **מחלקה 3:** ווייס
+
+In the roster (columns B-E) they're marked purple. Confirm with the user at the start of a block;
+when it changes, update this list and push.
