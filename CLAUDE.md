@@ -25,7 +25,8 @@ lists one plugin with `source: "./"`, described by `.claude-plugin/plugin.json`.
 Users install it with `/plugin marketplace add r34ln00b/guard-duty` and
 `/plugin install guard-duty@guard-duty-tools`. The repo is private and shared with collaborators, who
 get changes through marketplace updates. **Bump `version` in `.claude-plugin/plugin.json` with every
-change you push**, or installed copies won't update.
+change you push**, or installed copies won't update, and add a line for it to `CHANGELOG.md`
+(the release notes, newest first, in Hebrew).
 
 The plugin is a single skill, `skills/guard-duty/`. There are two halves, and most changes touch only one:
 

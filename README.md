@@ -1,43 +1,73 @@
-# guard-duty
+# guard-duty · דניס 🫡
 
-A Claude Code plugin that builds the guard duty list (רשימת שמירה) for ש.ג., יוסטור, דרומית and
-תצפית/פטרול. It asks for the people, limits and dates, then produces an Excel file in the unit's
-layout and a WhatsApp text, or writes straight into the Google Sheet.
+תוסף ל-Claude Code שבונה את השבצ"ק של היחידה: **שמירות** ו**דורסים**, ישירות בגיליון גוגל המשותף.
+מאחורי הקלעים עובד **דניס**, העוזר (או העבד, או המלך, תלוי ביום) של השבצ"ק.
 
-## Install
+מה השתנה לאחרונה: [release notes](CHANGELOG.md).
 
-Requires Python with `openpyxl`:
+## מה דניס יודע לעשות
+
+| | |
+|---|---|
+| **שמירות** | רשימת שמירה לש.ג, יוסטור, דרומית ופטרול/תצפית, לפי הכללים הקבועים: 6 שעות מנוחה אחרי לילה, רפאל ואליעזר בפטרול בלילה, חפ"ק רק ב-03:00–05:00 או 21:00–23:00 |
+| **דורסים** | דורס (3), דורס א (4), כרמל א (2) ותורנים (2) לבלוק של 24 שעות, 19:00–19:00. מחלקה אחת לבלוק, בלי חמ"ליסטים |
+| **תורנים הוגנים** | סופר מי היה תורן בסבבים הקודמים ומציע את מי שהיה הכי מעט, עם טבלה |
+| **עבודה מול הגיליון** | טיוטה בטאב `sand box`, ורק אחרי אישור שלכם עולה לטאב הסבב, בצבעי המחלקות |
+| **שינויים נקודתיים** | החלפות, ביטולים וצביעה ישירות בגיליון |
+| **לוג** | כל רשימה וכל שינוי נרשמים בטאב `לוג` |
+| **צילום מסך לחיילים** | תמונה של הטבלה עם משפט מדניס וחתימה, נשלחת אוטומטית אחרי כל אישור |
+| **Excel ו-WhatsApp** | קובץ בפורמט של היחידה וטקסט מוכן להדבקה, כשצריך |
+
+## איך עובדים
+
+1. פותחים שיחה. דניס מציג את היכולות ושואל באיזה טאב עובדים (למשל `סבב 3`).
+2. מבקשים: "שמירות למחר מ-07:00", "דורסים למחלקה 3 להיום ומחר", "תחליף בין רפאל לקינן ב-03:00".
+3. דניס בונה טיוטה ב-`sand box` ומראה אותה.
+4. מאשרים, הוא מעלה לטאב הסבב, רושם בלוג ושולח צילום מסך.
+
+הגיליון: [שבצק_01](https://docs.google.com/spreadsheets/d/13taiMKAGdcOAZQ_kIE3k8V2klLmBE3tUg3FaCIWvUcE).
+
+## התקנה
+
+צריך Python עם `openpyxl` (שמירות) ו-`pillow` (צילומי מסך):
 
 ```
-python -m pip install --user openpyxl
+python -m pip install --user openpyxl pillow
 ```
 
-In Claude Code:
+ב-Claude Code:
 
 ```
-/plugin marketplace add <github-user>/<repo-name>
+/plugin marketplace add r34ln00b/guard-duty
 /plugin install guard-duty@guard-duty-tools
 ```
 
-Then type `/guard-duty`, or ask for a guard list.
+לעבודה מול הגיליון צריך להפעיל את ה-connector של **Google Sheets** בשיחה.
 
-## Get updates
+## עדכונים
 
-```
-/plugin marketplace update guard-duty-tools
-```
+שני הקצינים צריכים לרוץ על אותה גרסה, זו שב-`main`:
 
-Better: turn on auto-update for this marketplace in `/plugin` → Marketplaces, so both officers
-always run the version on `main`.
+- **מומלץ:** להפעיל auto-update ב-`/plugin` → Marketplaces → `guard-duty-tools`.
+- או ידנית: `/plugin marketplace update guard-duty-tools`.
 
-Working on the repo itself with Claude, a hook (`.claude/hooks/sync-main.sh`) merges the latest
-`main` at every session start and after 3+ hours of quiet.
+בשיחה על הריפו עצמו, hook (`.claude/hooks/sync-main.sh`) מושך את `main` בתחילת כל שיחה ואחרי 3 שעות שקט.
 
-The agent's persona, Denis, lives in `skills/guard-duty/denis.md`.
+## מבנה הריפו
 
-## Change the tool
+| קובץ | מה יש בו |
+|---|---|
+| `skills/guard-duty/SKILL.md` | סדר העבודה והכללים הקבועים של השמירות |
+| `skills/guard-duty/doresim.md` | הדורסים, התורנים והחמ"ליסטים הקבועים |
+| `skills/guard-duty/denis.md` | האישיות של דניס, הודעת הפתיחה וכללי ההומור |
+| `skills/guard-duty/scripts/guard_duty.py` | מנוע השמירות |
+| `skills/guard-duty/scripts/screenshot.py` | צילום המסך לחיילים |
+| `skills/guard-duty/scripts/duty_history.py` | ספירת תורנות ודורסים מהסבבים הקודמים |
 
-- Rules and questions: `skills/guard-duty/SKILL.md`
-- Scheduler: `skills/guard-duty/scripts/guard_duty.py`
+## לשנות משהו
 
-Bump `version` in `.claude-plugin/plugin.json` with each change, then commit and push.
+כלל חדש או העדפה: פשוט לבקש מדניס, הוא יעדכן את הסקיל ויראה לכם לפני שהוא דוחף.
+בכל שינוי שנדחף ל-`main`:
+
+1. מעלים את `version` ב-`.claude-plugin/plugin.json`, אחרת ההתקנות לא יתעדכנו.
+2. מוסיפים שורה ל-[CHANGELOG.md](CHANGELOG.md).
