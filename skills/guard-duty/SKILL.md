@@ -66,10 +66,11 @@ share it, so always work from what is in the sheet, not from memory or an old fi
 
 ## Screenshot for the soldiers
 
-After every list you post and every change to the sheet, ask (one short line) whether they want a
-screenshot of the coming shifts to send to the soldiers. Suggest the range from the earliest slot
-you just changed (or the start of the new list) to the last filled row of the round tab, and let
-them change it.
+**After the user approves a draft and you've posted it to the round tab, always send the screenshot
+right away, without asking.** It covers what was just approved: from its first slot to its last
+(or to the last filled row of the round tab). After a smaller change to the sheet, ask (one short
+line) whether they want a screenshot, suggesting the range from the earliest slot you changed to
+the last filled row, and let them change it.
 
 Read those rows of the round tab (values and background colours) and write a JSON like this:
 

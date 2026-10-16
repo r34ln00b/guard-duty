@@ -53,7 +53,8 @@ Spread תורנות as widely as possible:
 
 ## Screenshot
 
-Offer it after posting, same as the guard list, showing **only the blocks you just worked on**.
+Send it right away after posting an approved draft, same as the guard list, showing **only the
+blocks you just worked on**.
 Use `scripts/screenshot.py` with:
 
 ```json
